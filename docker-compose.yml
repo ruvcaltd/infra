@@ -6,8 +6,6 @@ services:
     container_name: traefik
     restart: unless-stopped
     networks:
-      - traefik
-      - backend
       - app-network
     ports:
       - "80:80"
@@ -31,7 +29,6 @@ services:
     volumes:
       - mssql_data:/var/opt/mssql
     networks:
-      - backend
       - app-network
     healthcheck:
       test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "${MSSQL_SA_PASSWORD}", "-Q", "SELECT 1"]
@@ -49,7 +46,6 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - backend
       - app-network
 
     healthcheck:
@@ -67,7 +63,6 @@ services:
     ports:
       - "2181:2181"
     networks:
-      - backend
       - app-network
   kafka:
     image: confluentinc/cp-kafka:7.5.0
@@ -84,7 +79,6 @@ services:
     ports:
       - "9092:9092"
     networks:
-      - backend
       - app-network
 
     healthcheck:
@@ -102,7 +96,6 @@ services:
     volumes:
       - redis_data:/data
     networks:
-      - backend
       - app-network
 
     healthcheck:
@@ -112,12 +105,8 @@ services:
       retries: 10
 
 networks:
-  traefik:
-    external: false
-  backend:
-    external: false
-  app-network: 
-    external: true
+  app-network:
+    driver: bridge
 
 volumes:
   mssql_data:
