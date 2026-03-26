@@ -36,6 +36,13 @@ jobs:
           ssh -o StrictHostKeyChecking=no -p ${{ secrets.VPS_SSH_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} <<'EOF'
           set -euo pipefail
           cd ${{ secrets.VPS_PATH }}
+          echo "Preparing Traefik acme.json with safe permissions..."
+          mkdir -p traefik
+          if [ ! -f traefik/acme.json ]; then
+            echo '{}' > traefik/acme.json
+          fi
+          chmod 600 traefik/acme.json
+          ls -l traefik/acme.json
           echo "Pulling latest images and restarting compose stack..."
           docker compose pull
           docker compose up -d
