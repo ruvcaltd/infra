@@ -108,6 +108,7 @@ networks:
   app-network:
     driver: bridge
     name: app-network
+    external: true
 
 volumes:
   mssql_data:
