@@ -1,0 +1,41 @@
+name: Deploy to Linux VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy stack to VPS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.8.2
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+
+      - name: Copy files to VPS
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          rsync -avz --delete --exclude '.git' --exclude '.github' ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_PATH }}
+        env:
+          RSYNC_RSH: 'ssh -o StrictHostKeyChecking=no -p ${{ secrets.VPS_SSH_PORT }}'
+
+      - name: Deploy on VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VPS_SSH_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} <<'EOF'
+          cd ${{ secrets.VPS_PATH }}
+          echo "Pulling latest images and restarting compose stack..."
+          docker compose pull
+          docker compose up -d
+          docker compose ps
+          EOF
+
+      - name: Notify deployment
+        run: echo "Deployment complete"
