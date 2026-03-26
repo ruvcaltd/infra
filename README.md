@@ -61,6 +61,24 @@ All app containers on the same Docker network can refer to services by name:
 - `kafka:9092`
 - `redis:6379`
 
+## Required environment variables
+
+Set these variables in `.env` and in GitHub Secrets for deployment workflows:
+
+- `VPS_HOST` (host or IP address of your VPS)
+- `VPS_USER` (SSH username)
+- `VPS_SSH_PORT` (SSH port, e.g., `22`)
+- `VPS_PATH` (remote path to deploy code)
+- `VPS_SSH_PRIVATE_KEY` (private key for SSH auth)
+
+Optional service-specific variables (already managed in `docker-compose.yml` / `.env` as needed):
+
+- `MSSQL_SA_PASSWORD`
+- `POSTGRES_PASSWORD`
+- `POSTGRES_USER`
+- `POSTGRES_DB`
+- `REDIS_PASSWORD`
+
 ## Production hardening
 
 - Rotate credentials
