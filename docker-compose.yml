@@ -55,7 +55,7 @@ services:
       retries: 10
 
   zookeeper:
-    image: bitnami/zookeeper:3.8.0
+    image: bitnami/zookeeper:latest
     container_name: zookeeper
     restart: unless-stopped
     environment:
@@ -68,7 +68,7 @@ services:
       - backend
 
   kafka:
-    image: bitnami/kafka:3.5.0
+    image: bitnami/kafka:latest
     container_name: kafka
     restart: unless-stopped
     depends_on:
