@@ -126,7 +126,9 @@ services:
       - GENERIC_TIMEZONE=${TIMEZONE:-UTC}
       - NODE_ENV=production
       - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
-      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}      
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - NODE_FUNCTION_ALLOW_BUILTIN=*
+      - NODE_FUNCTION_ALLOW_EXTERNAL=*      
     volumes:
       - n8n_data:/home/node/.n8n
     networks:
