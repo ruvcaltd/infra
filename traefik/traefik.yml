@@ -19,6 +19,6 @@ providers:
 certificatesResolvers:
   letsencrypt:
     acme:
-      email: "admin@example.com"
+      email: "eshivakant1@gmail.com"
       storage: "/acme.json"
       tlsChallenge: {}
