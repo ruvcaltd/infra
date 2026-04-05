@@ -30,6 +30,10 @@ This file summarizes deployment problems we encountered and the exact fixes appl
 - Problem: DocuSeal Docker images (latest and versions v1.0.0-v1.8.0) fail to start with Rails 8.1.3 compatibility error: "undefined method 'has_many_inversing=' for ActiveRecord::Associations::Builder::HasMany:Class".
 - Fix: Switch to Documenso (documenso/documenso:latest) as an alternative document signing platform. Update environment variables for Next.js configuration and adjust volume mount path.
 
+## 9. Documenso database URL environment variables
+- Problem: Documenso requires both NEXT_PRIVATE_DATABASE_URL and NEXT_PRIVATE_DIRECT_DATABASE_URL environment variables, and passwords with special characters must be URL-encoded.
+- Fix: Add both required environment variables and URL-encode the password (e.g., `hJ6%Plk7/4l!` becomes `hJ6%252Plk7%2F4l%21`).
+
 ## Notes
 - Ensure `.env` is always provided out-of-band (not in repo) and excluded from synchronization.
 - Run one-off validation of the full workflow after each change: `docker compose pull && docker compose up -d` on the remote host.
