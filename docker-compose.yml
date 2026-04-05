@@ -160,6 +160,31 @@ services:
       - "traefik.http.routers.portainer.tls.certresolver=letsencrypt"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
+  docuseal:
+    image: docuseal/docuseal:latest
+    container_name: docuseal
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - FORCE_SSL=true
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/docuseal
+      - SECRET_KEY_BASE=${OPENROUTER_API_KEY}
+      - HOST=sign.ruvca-investments.com
+    volumes:
+      - docuseal_data:/data/docuseal
+    networks:
+      - app-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=app-network"
+      - "traefik.http.routers.docuseal.rule=Host(`sign.ruvca-investments.com`)"
+      - "traefik.http.routers.docuseal.entrypoints=websecure"
+      - "traefik.http.routers.docuseal.tls=true"
+      - "traefik.http.routers.docuseal.tls.certresolver=letsencrypt"
+      - "traefik.http.services.docuseal.loadbalancer.server.port=3000"
+
 networks:
   app-network:
     driver: bridge
@@ -174,3 +199,4 @@ volumes:
   redis_data:
   n8n_data:
   portainer_data:
+  docuseal_data:
