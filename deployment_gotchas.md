@@ -31,8 +31,8 @@ This file summarizes deployment problems we encountered and the exact fixes appl
 - Fix: Switch to Documenso (documenso/documenso:latest) as an alternative document signing platform. Update environment variables for Next.js configuration and adjust volume mount path.
 
 ## 9. Documenso database URL environment variables
-- Problem: Documenso requires both NEXT_PRIVATE_DATABASE_URL and NEXT_PRIVATE_DIRECT_DATABASE_URL environment variables, and passwords with special characters must be URL-encoded. Additionally, corrupted database state from failed migrations can prevent startup.
-- Fix: Add both required environment variables, create POSTGRES_PASSWORD_URLENCODED in .env file with URL-encoded password (e.g., `hJ6%Plk7/4l!` becomes `hJ6%252Plk7%2F4l%21`), and reset the database if migrations fail by dropping and recreating the database.
+- Problem: Documenso requires both NEXT_PRIVATE_DATABASE_URL and NEXT_PRIVATE_DIRECT_DATABASE_URL environment variables, passwords with special characters must be URL-encoded, and using the postgres superuser can cause permission issues during migrations.
+- Fix: Add both required environment variables, create POSTGRES_PASSWORD_URLENCODED and DOCUMENSO_DB_PASSWORD_URLENCODED in .env file with URL-encoded passwords, create a dedicated documenso_user in PostgreSQL with proper permissions, and update the database initialization script to create the user and grant permissions.
 
 ## Notes
 - Ensure `.env` is always provided out-of-band (not in repo) and excluded from synchronization.

@@ -168,8 +168,8 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      - NEXT_PRIVATE_DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD_URLENCODED}@postgres:5432/docuseal
-      - NEXT_PRIVATE_DIRECT_DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD_URLENCODED}@postgres:5432/docuseal
+      - NEXT_PRIVATE_DATABASE_URL=postgresql://${DOCUMENSO_DB_USER}:${DOCUMENSO_DB_PASSWORD_URLENCODED}@postgres:5432/docuseal
+      - NEXT_PRIVATE_DIRECT_DATABASE_URL=postgresql://${DOCUMENSO_DB_USER}:${DOCUMENSO_DB_PASSWORD_URLENCODED}@postgres:5432/docuseal
       - NEXTAUTH_SECRET=${OPENROUTER_API_KEY}
       - NEXTAUTH_URL=https://sign.ruvca-investments.com
       - NEXT_PUBLIC_WEBAPP_URL=https://sign.ruvca-investments.com
