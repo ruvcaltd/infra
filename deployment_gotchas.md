@@ -31,8 +31,8 @@ This file summarizes deployment problems we encountered and the exact fixes appl
 - Fix: Switch to Documenso (documenso/documenso:latest) as an alternative document signing platform. Update environment variables for Next.js configuration and adjust volume mount path.
 
 ## 9. Documenso database URL environment variables
-- Problem: Documenso requires both NEXT_PRIVATE_DATABASE_URL and NEXT_PRIVATE_DIRECT_DATABASE_URL environment variables, passwords with special characters must be URL-encoded, using the postgres superuser causes permission issues during migrations, and the database user needs comprehensive schema/table/sequence permissions.
-- Fix: Add both required environment variables, create POSTGRES_PASSWORD_URLENCODED and DOCUMENSO_DB_PASSWORD_URLENCODED in .env file with URL-encoded passwords, create a dedicated documenso_user in PostgreSQL, grant ALL PRIVILEGES on database, schema, all tables, all sequences, and set default privileges for future objects.
+- Problem: Documenso requires both NEXT_PRIVATE_DATABASE_URL and NEXT_PRIVATE_DIRECT_DATABASE_URL environment variables, passwords with special characters must be URL-encoded, using the postgres superuser causes permission issues during migrations, and the database user needs to be the database owner for full Prisma migration capabilities.
+- Fix: Add both required environment variables, create POSTGRES_PASSWORD_URLENCODED and DOCUMENSO_DB_PASSWORD_URLENCODED in .env file with URL-encoded passwords, create a dedicated documenso_user in PostgreSQL as the database owner, grant ALL PRIVILEGES on database, schema, all tables, all sequences, and set default privileges for future objects.
 
 ## Notes
 - Ensure `.env` is always provided out-of-band (not in repo) and excluded from synchronization.
