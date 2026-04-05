@@ -7,12 +7,15 @@ This repository sets up infrastructure services on a single Linux server using D
 - PostgreSQL
 - Zookeeper + Kafka
 - Redis
+- Portainer (container management)
+- N8N (workflow automation)
+- Documenso (document signing)
 
 ## Preconditions
 
 - Linux server with Docker + Docker Compose installed
 - Derived user has permission to run Docker
-- ports 80, 443, 8080, 1433, 5432, 2181, 9092, 6379 available
+- ports 80, 443, 8080, 1433, 5432, 2181, 9092, 6379, 9000, 5678 available
 
 ## Usage
 
@@ -38,9 +41,11 @@ docker compose up -d
 docker compose ps
 ```
 
-6. Traefik dashboard:
-
-- http://<server-ip>:8080
+6. Access services:
+   - Traefik dashboard: http://<server-ip>:8080
+   - Portainer: https://portainer.<domain>
+   - N8N: https://n8n.<domain>
+   - Documenso: https://sign.<domain>
 
 ## Volumes
 
@@ -51,6 +56,9 @@ Data is persisted via named volumes by Docker Compose:
 - `zookeeper_data`
 - `kafka_data`
 - `redis_data`
+- `portainer_data`
+- `n8n_data`
+- `docuseal_data`
 
 ## Connect from other containers
 

@@ -26,11 +26,9 @@ This file summarizes deployment problems we encountered and the exact fixes appl
 - Problem: `docker compose up -d` might fail when existing containers exist or are in bad state.
 - Fix: add `docker compose down --remove-orphans || true` before `docker compose pull && docker compose up -d`.
 
-## 7. Production env contrast and docs
-- Problem: missing documentation for environment variables needed by deploy and compose.
-- Fix: update `README.md` with `.env` variable definitions and real expected key names.
-
----
+## 8. DocuSeal Rails compatibility issues
+- Problem: DocuSeal Docker images (latest and versions v1.0.0-v1.8.0) fail to start with Rails 8.1.3 compatibility error: "undefined method 'has_many_inversing=' for ActiveRecord::Associations::Builder::HasMany:Class".
+- Fix: Switch to Documenso (documenso/documenso:latest) as an alternative document signing platform. Update environment variables for Next.js configuration and adjust volume mount path.
 
 ## Notes
 - Ensure `.env` is always provided out-of-band (not in repo) and excluded from synchronization.

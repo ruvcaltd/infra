@@ -161,19 +161,20 @@ services:
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
   docuseal:
-    image: docuseal/docuseal:latest
+    image: documenso/documenso:latest
     container_name: docuseal
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
     environment:
-      - FORCE_SSL=true
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/docuseal
-      - SECRET_KEY_BASE=${OPENROUTER_API_KEY}
-      - HOST=sign.ruvca-investments.com
+      - NEXTAUTH_SECRET=${OPENROUTER_API_KEY}
+      - NEXTAUTH_URL=https://sign.ruvca-investments.com
+      - NEXT_PUBLIC_WEBAPP_URL=https://sign.ruvca-investments.com
+      - NEXT_PUBLIC_MARKETING_URL=https://sign.ruvca-investments.com
     volumes:
-      - docuseal_data:/data/docuseal
+      - docuseal_data:/opt/documenso/data
     networks:
       - app-network
     labels:
@@ -190,6 +191,7 @@ networks:
     driver: bridge
     name: app-network
     external: true
+
 
 volumes:
   mssql_data:
