@@ -199,6 +199,55 @@ services:
       - "traefik.http.routers.docuseal.tls.certresolver=letsencrypt"
       - "traefik.http.services.docuseal.loadbalancer.server.port=3000"
 
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=akaunting
+      - MYSQL_USER=akaunting
+      - MYSQL_PASSWORD=${AKAUNTING_DB_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  akaunting:
+    image: akaunting/akaunting:latest
+    container_name: akaunting
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - APP_URL=https://akaunting.ruvca-investments.com
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=akaunting
+      - DB_USERNAME=akaunting
+      - DB_PASSWORD=${AKAUNTING_DB_PASSWORD}
+      - DB_PREFIX=aka_
+      - CACHE_DRIVER=file
+      - SESSION_DRIVER=file
+    volumes:
+      - akaunting_data:/var/www/html
+    networks:
+      - app-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=app-network"
+      - "traefik.http.routers.akaunting.rule=Host(`akaunting.ruvca-investments.com`)"
+      - "traefik.http.routers.akaunting.entrypoints=websecure"
+      - "traefik.http.routers.akaunting.tls=true"
+      - "traefik.http.routers.akaunting.tls.certresolver=letsencrypt"
+      - "traefik.http.services.akaunting.loadbalancer.server.port=80"
+
 networks:
   app-network:
     driver: bridge
@@ -215,3 +264,5 @@ volumes:
   n8n_data:
   portainer_data:
   docuseal_data:
+  mysql_data:
+  akaunting_data:
