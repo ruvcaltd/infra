@@ -172,9 +172,11 @@ services:
           apk add --no-cache openssl &&
           openssl req -x509 -newkey rsa:4096 -keyout /tmp/key.pem -out /tmp/cert.pem -days 3650 -nodes -subj '/CN=documenso' &&
           openssl pkcs12 -export -out /certs/cert.p12 -inkey /tmp/key.pem -in /tmp/cert.pem -passout pass: &&
+          chmod 644 /certs/cert.p12 &&
           rm /tmp/key.pem /tmp/cert.pem &&
           echo 'Certificate generated.'
         else
+          chmod 644 /certs/cert.p12 &&
           echo 'Certificate already exists, skipping.'
         fi
       "
