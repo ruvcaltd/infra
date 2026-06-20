@@ -208,6 +208,7 @@ services:
       - NEXTAUTH_URL=https://sign.ruvca-investments.com
       - NEXT_PUBLIC_WEBAPP_URL=https://sign.ruvca-investments.com
       - NEXT_PUBLIC_MARKETING_URL=https://sign.ruvca-investments.com
+      - NEXT_PUBLIC_DISABLE_SIGNUP=true
     volumes:
       - docuseal_data:/opt/documenso/data
       - docuseal_certs:/certs:ro
