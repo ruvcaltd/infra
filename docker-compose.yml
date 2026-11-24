@@ -127,6 +127,7 @@ services:
       - NODE_ENV=production
       - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
       - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
       - NODE_FUNCTION_ALLOW_BUILTIN=*
       - NODE_FUNCTION_ALLOW_EXTERNAL=*      
     volumes:
